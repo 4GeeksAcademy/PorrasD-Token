@@ -1,19 +1,17 @@
 """
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
-from flask import Flask, request, jsonify, url_for, Blueprint
+from flask import Flask, request, jsonify, url_for, Blueprint, current_app
 from api.models import db, User
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
-from flask_bcrypt import Bcrypt
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+from flask_jwt_extended import  create_access_token, jwt_required, get_jwt_identity, get_jwt
 
 api = Blueprint('api', __name__)
 
 # Allow CORS requests to this API
 CORS(api)
-bcrypt=Bcrypt()
-jwt=JWTManager()
+
 delete_tokens = set() 
 
 @api.route('/hello', methods=['POST', 'GET'])
@@ -34,7 +32,7 @@ def sign_up():
     user_exists = User.query.filter_by(email = email).first()
 
     if user_exists is None:
-        password_hash =  bcrypt.generate_password_hash(password)
+        password_hash =  current_app.bcrypt.generate_password_hash(password).decode("utf-8")
 
         new_user = User(
             name = name,
@@ -65,7 +63,7 @@ def login():
     user_exists = User.query.filter_by(email = email).first()
 
     if user_exists:
-        valid_password = bcrypt.check_password_hash(user_exists.password, password)
+        valid_password = current_app.bcrypt.check_password_hash(user_exists.password, password)
         if valid_password:
             access_token = create_access_token(identity=user_exists.email)
             return jsonify({"token": access_token}), 200  
@@ -74,12 +72,6 @@ def login():
     else:
         return jsonify({"message": "Invalid user."}), 404
     
-# @api.route('/logout', methods=['POST'])
-# @jwt_required()
-# def logout():
-#     jti = get_jwt()["jti"]  
-#     delete_tokens.add(jti)   
-#     return jsonify({"msg": "You have been logged-out"}), 200
 
 @api.route('/private', methods=['GET'])
 @jwt_required()

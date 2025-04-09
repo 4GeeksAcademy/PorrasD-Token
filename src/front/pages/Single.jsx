@@ -7,7 +7,7 @@ import useGlobalReducer from "../hooks/useGlobalReducer";  // Import a custom ho
 // Define and export the Single component which displays individual item details.
 export const Single = props => {
   // Access the global state using the custom hook.
-  const { store } = useGlobalReducer()
+  const { store , dispatch } = useGlobalReducer()
 
   // Retrieve the 'theId' URL parameter using useParams hook.
   const { theId } = useParams()
@@ -15,6 +15,8 @@ export const Single = props => {
 
   return (
     <div className="container text-center">
+      {/* {store.message}
+      <button onClick={() => dispatch({type: "set_hello" , payload: "newMessage"})}>Cambiar Mensaje</button> */}
       {/* Display the title of the todo element dynamically retrieved from the store using theId. */}
       <h1 className="display-4">Todo: {singleTodo?.title}</h1>
       <hr className="my-4" />  {/* A horizontal rule for visual separation. */}

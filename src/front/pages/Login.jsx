@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export const Login = () => {
+const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
@@ -11,7 +11,7 @@ export const Login = () => {
     e.preventDefault();
     
     try {
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/login`, {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}api/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -22,8 +22,8 @@ export const Login = () => {
       const data = await response.json();
 
       if (response.ok) {
-        localStorage.setItem("token", data.token);  // Guardar el token en el localStorage
-        navigate("/private");  // Redirigir a la página privada
+        localStorage.setItem("token", data.token);  
+        navigate("/private");  
       } else {
         setError(data.message);
       }
@@ -64,3 +64,4 @@ export const Login = () => {
     </div>
   );
 };
+export default Login;

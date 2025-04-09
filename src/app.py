@@ -21,6 +21,7 @@ static_file_dir = os.path.join(os.path.dirname(
 app = Flask(__name__)
 app.url_map.strict_slashes = False
 bcrypt=Bcrypt(app)
+app.bcrypt = bcrypt
 jwt=JWTManager(app)
 # database condiguration
 db_url = os.getenv("DATABASE_URL")

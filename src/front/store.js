@@ -1,6 +1,6 @@
 export const initialStore=()=>{
   return{
-    message: null,
+    message: "Mensaje 1",
     todos: [
       {
         id: 1,

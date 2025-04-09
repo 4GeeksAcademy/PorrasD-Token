@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export const Signup = () => {
+const SignUp = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -23,7 +23,7 @@ export const Signup = () => {
       const data = await response.json();
 
       if (response.ok) {
-        navigate("/login");  // Redirigir al login después de registrarse
+        navigate("/login");  
       } else {
         setError(data.message);
       }
@@ -75,3 +75,5 @@ export const Signup = () => {
     </div>
   );
 };
+
+export default SignUp;
